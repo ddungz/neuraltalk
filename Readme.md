@@ -1,3 +1,7 @@
+### Testing for Interactive Image Descriptions
+`python predict_on_images.py cv/flickr8k_cnn_lstm_v1.p -r example_images/`
+
+
 #NeuralTalk
 
 This project contains *Python+numpy* source code for learning **Multimodal Recurrent Neural Networks** that describe images with sentences.
