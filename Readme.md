@@ -1,6 +1,8 @@
 ### Testing for Interactive Image Descriptions
 `python predict_on_images.py cv/flickr8k_cnn_lstm_v1.p -r example_images/`
 
+#### Fixing MatCaffe issues on Mac 10.10
+http://stackoverflow.com/questions/19773916/compiling-mexopencv-in-os-x-10-9-with-xcode-5-and-matlab-r2013b
 
 #NeuralTalk
 
