@@ -1,16 +1,28 @@
 %% vgg / caffe spec
 
-use_gpu = 1;
-caffe('set_device', 1);
-model_def_file = '/home/karpathy/caffe2/models/vgg_ilsvrc_16/deploy_features.prototxt';
-model_file = '/home/karpathy/caffe2/models/vgg_ilsvrc_16/VGG_ILSVRC_16_layers.caffemodel';
+use_gpu = 0;
+gpu_id = 1;
+
+addpath('/Users/jessehu/caffe/caffe-bvlc/matlab/');
+
+% Set caffe mode
+if exist('use_gpu', 'var') && use_gpu
+  caffe.set_mode_gpu();
+  gpu_id = 0;  % we will use the first gpu in this demo
+  caffe.set_device(gpu_id);
+else
+  caffe.set_mode_cpu();
+end
+
+model = './models/vgg_ilsvrc_16/VGG_ILSVRC_16_layers_deploy.prototxt';
+weights = './models/vgg_ilsvrc_16/VGG_ILSVRC_16_layers.caffemodel';
 batch_size = 10;
 
-matcaffe_init(use_gpu, model_def_file, model_file);
+net = caffe.Net(model, weights, 'test');
 
 %% input files spec
 
-root_path = '/data2/karpathy/flickr30k/';
+root_path = './data/';
 fs = textread([root_path 'all_imgs.txt'], '%s');
 N = length(fs);
 
@@ -32,11 +44,18 @@ for b=1:batch_size:N
     input_data = prepare_images_batch(Is);
 
     tic;
-    scores = caffe('forward', {input_data});
+    scores = net.forward({input_data});
     scores = squeeze(scores{1});
+    size(scores)
     tt = toc;
 
     nb = length(Is);
+    size(feats)
+    
+    b
+    b+nb-1
+    1
+    nb
     feats(:, b:b+nb-1) = scores(:,1:nb);
     fprintf('%d/%d = %.2f%% done in %.2fs\n', b, N, 100*(b-1)/N, tt);
 end
